@@ -1,0 +1,21 @@
+CREATE TABLE `company`.`department` (
+  `DName` VARCHAR(45) NOT NULL,
+  `DNum` INT NOT NULL,
+  `ManagerSSN` INT NULL,
+  `ManagerStartDt` DATE NULL,
+  PRIMARY KEY (`DNum`));
+
+
+
+CREATE TABLE `company`.`employee` (
+  `EFname` VARCHAR(45) NOT NULL,
+  `EMiddle` VARCHAR(45) NULL,
+  `ELname` VARCHAR(45) NULL,
+  `ESSN` INT NOT NULL,
+  `EDOB` DATE NOT NULL,
+  `EAddress` VARCHAR(45) NOT NULL,
+  `Sex` CHAR(1) NOT NULL,
+  `ESalary` INT NULL,
+  `SupSSN` INT NULL,
+  `EDeptNo` INT NULL,
+  PRIMARY KEY (`ESSN`));

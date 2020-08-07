@@ -1,5 +1,6 @@
 import csv
 import json
+import mysql.connector
 
 from pymongo import MongoClient
 
@@ -25,3 +26,38 @@ def get_employee() :
 
 get_employee()
 dbconnect.close()
+
+
+
+
+cnx = mysql.connector.connect(user='root', password='tiger',
+                              host='127.0.0.1',
+                              database='company')
+
+print("Connection created=")
+
+mycursor = cnx.cursor()
+
+mycursor.execute("SELECT * FROM department")
+
+myresult = mycursor.fetchall()
+
+for x in myresult:
+  print(x)
+
+
+
+print("\n\n\n\Query 2==================================")
+myquery = "select PName,DName from project, department where project.PDeptNo = department.DNum"
+cursor1 = cnx.cursor()
+cursor1.execute(myquery)
+result = cursor1.fetchall()
+
+for x in result:
+  print(x)
+
+cnx.close()
+
+
+
+
