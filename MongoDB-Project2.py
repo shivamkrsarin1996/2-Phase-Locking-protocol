@@ -10,6 +10,7 @@ mydb = mysql.connector.connect(
   user="root",
   password="tiger"
 )
+# Table sequence   - Department -> Dept_loc -> Employee -> Project -> WorksOn
 
 dbcursor = mydb.cursor()
 dbcursor.execute("CREATE DATABASE IF NOT EXISTS company")
@@ -31,6 +32,7 @@ for row in csvfile:
     dbcursor.execute(insertdept, val)
 
 mydb.commit()
+print("*********************************************** Table Dept created**************************")
 
 # Create Employee Table--------------------------------
 dbcursor.execute("DROP TABLE IF EXISTS company.employee")
@@ -65,6 +67,8 @@ for row in csvfile:
     EDeptNo = row.rstrip('\n').replace("'", '').split(',')[11]
     dbcursor.execute(insertemp, (EFname, EMiddle, ELname, ESSN, EDOB, EAddress, Sex, ESalary, SupSSN, EDeptNo))
 mydb.commit()
+print("*********************************************** Table Emp created**************************")
+
 
 # Create Department Table--------------------------------
 dbcursor.execute("DROP TABLE IF EXISTS company.department")
