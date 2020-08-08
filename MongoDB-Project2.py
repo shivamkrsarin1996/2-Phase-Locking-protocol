@@ -15,6 +15,7 @@ mydb = mysql.connector.connect(
 
 dbcursor = mydb.cursor()
 dbcursor.execute("CREATE DATABASE IF NOT EXISTS company")
+dbcursor.execute("use company")
 dbcursor.execute("DROP TABLE IF EXISTS company.works_on")
 dbcursor.execute("DROP TABLE IF EXISTS company.project")
 dbcursor.execute("DROP TABLE IF EXISTS company.employee")
@@ -146,32 +147,87 @@ print("\n***********************************************Values inserted in Works
 
 
 
-
-
+try: 
+    conn = MongoClient('localhost', 27017)
+    print("Connected successfully!!!") 
+except:   
+    print("Could not connect to MongoDB") 
+  
+# # database 
+db = conn.company.projects
+db.drop()
 
 
 #Query
 print("\nExecuting Query\n")
-dbcursor.execute("Select EmpSSN, PName, Hours from company.works_on, company.project where project.PNo = works_on.PNum Group by EmpSSN")
-result = dbcursor.fetchall()
-dbcursor.execute("Select count(EmpSSN) from company.works_on, company.project where project.PNo = works_on.PNum ")
-countt = dbcursor.fetchall()
-print("count=",countt)
+DeptProjquery= "Select PName, PNo, DName from company.works_on, company.project, company.department where project.PDeptNo = department.DNum Group By PName"
 
-print(type(result))
-i=0
-print(len(result))
-project_json= open('Input/Output.json', 'w')
-#project_json.write("{\n")
-for x in result:
-    print(x)
-    i = i + 1
-    out_string = '{"EmpSSN":"' + str(x[0]) + '","PName":"' + str(x[1]) + '","Hours":"' + str(x[2]) + '}'
-    #out = str(project_dict).replace("'",'"')
-    project_json.write(out_string)
-    if i < len(result) :
-        project_json.write(",\n")
-#project_json.write("\n}")
-project_json.close()
-print(i)
+dbcursor.execute(DeptProjquery)
+projresult = dbcursor.fetchall()
+for x in projresult:
+   print(x)
+
+   EmpWorksquery = "Select ELname, EFname, Hours FROM employee, works_on Where employee.ESSN = works_on.EmpSSN AND works_on.PNum = " + str(x[1])
+   print(EmpWorksquery)
+   cur = mydb.cursor()
+   cur.execute(EmpWorksquery)
+   empResult = cur.fetchall()
+   elist=[]
+   for y in empResult:
+        empList = ["ELname", "EFname", "Hours"]
+        
+        liststmt = {empList[0]: y[0], empList[1]: y[1],empList[2]:str(y[2])}
+        print(liststmt)
+        elist.append(liststmt)
+        print(elist)
+
+   db.insert_many([{
+        "PName": x[0],
+        "PNo": x[1],
+        "DName": x[2],
+        "Employees" : elist 
+    }])    
+print("Doneee")
+
+
+
+# # importing data to json
+# print(type(result))
+# i=0
+# print(len(result))
+# project_json= open('Input/Output.json', 'w')
+# #project_json.write("{\n")
+# for x in result:
+#     print(x)
+#     i = i + 1
+#     out_string = '{"EmpSSN":"' + str(x[0]) + '","PName":"' + str(x[1]) + '","Hours":"' + str(x[2]) + '}'
+#     #out = str(project_dict).replace("'",'"')
+#     project_json.write(out_string)
+#     if i < len(result) :
+#         project_json.write(",\n")
+# #project_json.write("\n}")
+# project_json.close()
+# print(i)
+
+
+
+
+# colctn = db["worksOn"]
+
+# print(colctn)
+
+
+# for x in result:
+#  
+
+conn.close()
+
+
+   
+
+# Select DISTINCT PName, PNo, DName from company.works_on, 
+# company.project, company.department where
+#  project.PDeptNo = department.DNum Group By PName
+
+# 
 
