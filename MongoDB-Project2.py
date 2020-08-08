@@ -158,28 +158,24 @@ db = conn.company.projects
 db.drop()
 
 
-#Query
-print("\nExecuting Query\n")
+#Code for Inserting Documents into Projects Collection
+print("\nExecuting Query to Find Project Data\n")
 DeptProjquery= "Select PName, PNo, DName from company.works_on, company.project, company.department where project.PDeptNo = department.DNum Group By PName"
-
 dbcursor.execute(DeptProjquery)
 projresult = dbcursor.fetchall()
-for x in projresult:
-   print(x)
 
+for x in projresult:
+   # print(x)
+   print("\nExecuting Query to Find Employees for"+str(x[1])+"\n")
    EmpWorksquery = "Select ELname, EFname, Hours FROM employee, works_on Where employee.ESSN = works_on.EmpSSN AND works_on.PNum = " + str(x[1])
-   print(EmpWorksquery)
    cur = mydb.cursor()
    cur.execute(EmpWorksquery)
    empResult = cur.fetchall()
    elist=[]
    for y in empResult:
         empList = ["ELname", "EFname", "Hours"]
-        
-        liststmt = {empList[0]: y[0], empList[1]: y[1],empList[2]:str(y[2])}
-        print(liststmt)
+        liststmt = {empList[0]: y[0], empList[1]: y[1],empList[2]:y[2]}
         elist.append(liststmt)
-        print(elist)
 
    db.insert_many([{
         "PName": x[0],
@@ -187,47 +183,37 @@ for x in projresult:
         "DName": x[2],
         "Employees" : elist 
     }])    
-print("Doneee")
+print("=============Projects Collection Created==============")
+
+#Code for Inserting Documents into Projects Collection
+dbemp = conn.company.employees
+dbemp.drop()
+print("\nExecuting Query to Find Project Data\n")
+empDeptquery= "Select ELname, EFname,DName, ESSN from employee,department Where employee.EDeptNo = department.DNum"
+dbcursor.execute(empDeptquery)
+deptResult = dbcursor.fetchall()
+
+
+for x in deptResult:
+    # print(x)
+    empProjectquery ="Select PName, PNo, Hours from employee,project,works_on Where works_on.EmpSSN =" + x[3]+" AND works_on.PNum = project.PNo group by Pname"
+    cur = mydb.cursor()
+    cur.execute(empProjectquery)
+    empProjectResult = cur.fetchall()
+    projlist = []
+    for y in empProjectResult:
+        # print(y)
+        pList = ["PName", "PNumber", "Hours"]
+        listitm = {pList[0]: y[0], pList[1]: y[1], pList[2]: y[2]}
+        projlist.append(listitm)
+    dbemp.insert_many([{
+        "ELname": x[0],
+        "EFname": x[1],
+        "DName": x[2],
+        "Projects": projlist
+    }])
+print("=============Employees Collection Created==============")
 
 
 
-# # importing data to json
-# print(type(result))
-# i=0
-# print(len(result))
-# project_json= open('Input/Output.json', 'w')
-# #project_json.write("{\n")
-# for x in result:
-#     print(x)
-#     i = i + 1
-#     out_string = '{"EmpSSN":"' + str(x[0]) + '","PName":"' + str(x[1]) + '","Hours":"' + str(x[2]) + '}'
-#     #out = str(project_dict).replace("'",'"')
-#     project_json.write(out_string)
-#     if i < len(result) :
-#         project_json.write(",\n")
-# #project_json.write("\n}")
-# project_json.close()
-# print(i)
-
-
-
-
-# colctn = db["worksOn"]
-
-# print(colctn)
-
-
-# for x in result:
-#  
-
-conn.close()
-
-
-   
-
-# Select DISTINCT PName, PNo, DName from company.works_on, 
-# company.project, company.department where
-#  project.PDeptNo = department.DNum Group By PName
-
-# 
 
