@@ -154,15 +154,24 @@ print("\n***********************************************Values inserted in Works
 print("\nExecuting Query\n")
 dbcursor.execute("Select EmpSSN, PName, Hours from company.works_on, company.project where project.PNo = works_on.PNum Group by EmpSSN")
 result = dbcursor.fetchall()
+dbcursor.execute("Select count(EmpSSN) from company.works_on, company.project where project.PNo = works_on.PNum ")
+countt = dbcursor.fetchall()
+print("count=",countt)
+
+print(type(result))
+i=0
+print(len(result))
 project_json= open('Input/Output.json', 'w')
-project_json.write("{\n")
+#project_json.write("{\n")
 for x in result:
     print(x)
-    out_string = '{"EmpSSN":"' + str(x[0]) + '","PName":' + str(x[1]) + ',"Hours":"' + str(x[2]) + '}'
+    i = i + 1
+    out_string = '{"EmpSSN":"' + str(x[0]) + '","PName":"' + str(x[1]) + '","Hours":"' + str(x[2]) + '}'
     #out = str(project_dict).replace("'",'"')
     project_json.write(out_string)
-    project_json.write("\n")
-project_json.write("\n}")
+    if i < len(result) :
+        project_json.write(",\n")
+#project_json.write("\n}")
 project_json.close()
-
+print(i)
 
