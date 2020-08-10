@@ -1,3 +1,6 @@
+# Extra Credit -2
+# Student ID - 1001781008 Name - Pankaj Walke
+# Student ID - 1001751987 Name - Shivam Kumar Sareen
 import csv
 import json
 
@@ -154,104 +157,6 @@ except:
     print("Could not connect to MongoDB") 
   
 # # database 
-db = conn.company.projects
-db.drop()
-
-
-# Inserting Documents into Projects Collection
-print("\nExecuting Query to Find Project Data\n")
-DeptProjquery= "Select PName, PNo, DName from company.works_on, company.project, company.department where project.PDeptNo = department.DNum Group By PName"
-dbcursor.execute(DeptProjquery)
-projresult = dbcursor.fetchall()
-
-for x in projresult:
-   # print(x)
-   print("\nExecuting Query to Find Employees for"+str(x[1])+"\n")
-   EmpWorksquery = "Select ELname, EFname, Hours FROM employee, works_on Where employee.ESSN = works_on.EmpSSN AND works_on.PNum = " + str(x[1])
-   cur = mydb.cursor()
-   cur.execute(EmpWorksquery)
-   empResult = cur.fetchall()
-   elist=[]
-   for y in empResult:
-        empList = ["ELname", "EFname", "Hours"]
-        liststmt = {empList[0]: y[0], empList[1]: y[1],empList[2]:y[2]}
-        elist.append(liststmt)
-
-   db.insert_many([{
-        "PName": x[0],
-        "PNo": x[1],
-        "DName": x[2],
-        "Employees" : elist 
-    }])    
-print("=============Projects Collection Created==============")
-
-
-
-#Inserting Documents into Employee Collection
-dbemp = conn.company.employees
-dbemp.drop()
-print("\nExecuting Query to Find Project Data\n")
-empDeptquery= "Select ELname, EFname,DName, ESSN from employee,department Where employee.EDeptNo = department.DNum"
-dbcursor.execute(empDeptquery)
-deptResult = dbcursor.fetchall()
-
-
-for x in deptResult:
-    # print(x)
-    empProjectquery ="Select PName, PNo, Hours from employee,project,works_on Where works_on.EmpSSN =" + x[3]+" AND works_on.PNum = project.PNo group by Pname"
-    cur = mydb.cursor()
-    cur.execute(empProjectquery)
-    empProjectResult = cur.fetchall()
-
-    projlist = []
-    for y in empProjectResult:
-        # print(y)
-        pList = ["PName", "PNumber", "Hours"]
-        listitm = {pList[0]: y[0], pList[1]: y[1], pList[2]: y[2]}
-        projlist.append(listitm)
-    dbemp.insert_many([{
-        "ELname": x[0],
-        "EFname": x[1],
-        "DName": x[2],
-        "Projects": projlist
-    }])
-print("=============Employees Collection Created==============")
-
-
-
-
-
-
-
-# Inserting Documents into Projects Collection
-print("\nExecuting Query to Find Project Data\n")
-DeptProjquery= "Select PName, PNo, DName from company.works_on, company.project, company.department where project.PDeptNo = department.DNum Group By PName"
-dbcursor.execute(DeptProjquery)
-projresult = dbcursor.fetchall()
-
-for x in projresult:
-   # print(x)
-   print("\nExecuting Query to Find Employees for"+str(x[1])+"\n")
-   EmpWorksquery = "Select ELname, EFname, Hours FROM employee, works_on Where employee.ESSN = works_on.EmpSSN AND works_on.PNum = " + str(x[1])
-   cur = mydb.cursor()
-   cur.execute(EmpWorksquery)
-   empResult = cur.fetchall()
-   elist=[]
-
-   for y in empResult:
-        empList = ["ELname", "EFname", "Hours"]
-        liststmt = {empList[0]: y[0], empList[1]: y[1],empList[2]:y[2]}
-        elist.append(liststmt)
-
-   db.insert_many([{
-        "PName": x[0],
-        "PNo": x[1],
-        "DName": x[2],
-        "Employees" : elist 
-    }])    
-print("=============Projects Collection Created==============")
-
-
 
 #Inserting Department Collection
 dbdpt = conn.company.department

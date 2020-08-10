@@ -1,3 +1,6 @@
+# Extra Credit -1
+# Student ID - 1001781008 Name - Pankaj Walke
+# Student ID - 1001751987 Name - Shivam Kumar Sareen
 import lxml.etree as ET 
 from xml.etree import ElementTree
 from xml.dom import minidom
@@ -282,114 +285,5 @@ emp_file.write(prettystr)
 
 emp_file.close()
 print("File created") 
-
-
-
-
-# # Inserting Documents into Projects Collection
-# print("\nExecuting Query to Find Project Data\n")
-# DeptProjquery= "Select PName, PNo, DName from company.works_on, company.project, company.department where project.PDeptNo = department.DNum Group By PName"
-# dbcursor.execute(DeptProjquery)
-# projresult = dbcursor.fetchall()
-
-# for x in projresult:
-#    # print(x)
-#    print("\nExecuting Query to Find Employees for"+str(x[1])+"\n")
-#    EmpWorksquery = "Select ELname, EFname, Hours FROM employee, works_on Where employee.ESSN = works_on.EmpSSN AND works_on.PNum = " + str(x[1])
-#    cur = mydb.cursor()
-#    cur.execute(EmpWorksquery)
-#    empResult = cur.fetchall()
-#    elist=[]
-
-#    for y in empResult:
-#         empList = ["ELname", "EFname", "Hours"]
-#         liststmt = {empList[0]: y[0], empList[1]: y[1],empList[2]:y[2]}
-#         elist.append(liststmt)
-
-#    db.insert_many([{
-#         "PName": x[0],
-#         "PNo": x[1],
-#         "DName": x[2],
-#         "Employees" : elist 
-#     }])    
-# print("=============Projects Collection Created==============")
-
-
-# root = ET.Element("company") 
-# doc = ET.SubElement(root, "project") 
-# field1 = ET.SubElement(doc, "ProjName") 
-# field1.text = "some value1" 
-# field2 = ET.SubElement(doc, "field2") 
-# field2.set("name", "asdfasd") 
-# field2.text = "some vlaue2" 
-# prettystr = prettify(root)
-# print(prettystr)
-# tree = ET.ElementTree(root) 
-# tree.write("filename.xml") 
-
-# file = open("xml_file.xml", 'w')
-
-# file.write(prettystr)
-# # xml.ElementTree(root).write(file)
-# file.close()
-
-# print("File created")
-
-
-# # #Inserting Department Collection
-# # dbdpt = conn.company.department
-# # dbdpt.drop()
-# # print("\nExecuting Query to Find Department & their Manager's Data\n")
-# # DeptMgrquery= "Select DName, DNum, ELname as MgrLName, EFname as MgrFName from employee, department Where department.ManagerSSN = employee.ESSN group by DName"
-# # dbcursor.execute(DeptMgrquery)
-# # deptMgrResult = dbcursor.fetchall()
-
-
-# # for z in deptMgrResult:
-# #     # print(x)
-# #     #empProjectquery ="Select PName, PNo, Hours from employee,project,works_on Where works_on.EmpSSN =" + x[3]+" AND works_on.PNum = project.PNo group by Pname"
-# #     empDeptquery= "Select ELname,  EFname, ESalary from employee, department Where department.DNum = employee.EDeptNo AND employee.EDeptNo = " + str(z[1])
-# #     curdept = mydb.cursor()
-# #     curdept.execute(empDeptquery)
-
-
-# #     empDeptMgrResult = curdept.fetchall()
-# #     employeelist = []
-# #     for y in empDeptMgrResult:
-# #         # print(y)
-# #         dList = ["ELname", "EFname", "Salary"]
-# #         listitms = {dList[0]: y[0], dList[1]: y[1], dList[2]: y[2]}
-# #         employeelist.append(listitms)
-# #     dbdpt.insert_many([{
-# #         "DName": z[0],
-# #         "DNumber": z[1],
-# #         "ManagerLname": z[2],
-# #         "ManagerFname": z[3],
-# #         "Employees in Dept" : employeelist
-# #     }])
-# # print("=============Department Collection Created==============")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
