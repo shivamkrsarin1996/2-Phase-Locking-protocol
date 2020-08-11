@@ -1,4 +1,4 @@
-db.projects.find({},{"Employees": {$elemMatch: {"Hours": {$gt:25}}}, "PName":1, "PNo":1 , "_id":0}).pretty()
+db.projects.find({},{"Employees": {$elemMatch: {"Hours": {$gt:40}}}, "PName":1, "PNo":1 , "_id":0}).pretty()
 
 
 
@@ -6,12 +6,12 @@ db.employees.find({"DName":"Research"},{"_id": 0,"ELname":1, "EFname":1}).pretty
 
 
 
-db.projects.aggregate({$match:{"PNo":1}},{ $project:{"_id": 0,"PName":1, "PNo":1, workerscount:{$size:"$Employees" }}}).pretty()
+db.projects.aggregate({ $project:{"_id": 0,"PName":1, "PNo":1, workerscount:{$size:"$Employees" }}}).pretty()
 
 
 
 
-db.employees.find({$expr:{$gt:[{$size:"$Projects"},8]}},{"_id":0, "ELname":1, "EFname":1,"DName":1,"Projects.PName":1}).pretty()
+db.employees.find({$expr:{$gte:[{$size:"$Projects"},4]}},{"_id":0, "ELname":1, "EFname":1,"DName":1,"Projects.PName":1}).pretty()
 
 
 
