@@ -33,7 +33,7 @@ createdept = "CREATE TABLE IF NOT EXISTS company.department (DName VARCHAR(45) N
              "ManagerStartDt VARCHAR(45) NULL)"
 dbcursor.execute(createdept)
 mydb.commit()
-print("\n*********************************************** Table Dept created**************************")
+print("\n************************************ Table Dept created************************************")
 
 csvfile = open('Input/DEPARTMENT.csv', 'r')
 insertdept = "INSERT INTO company.department (DName, DNum, ManagerSSN, ManagerStartDt) VALUES (%s, %s, %s,%s)"
@@ -42,7 +42,7 @@ for row in csvfile:
     dbcursor.execute(insertdept, val)
 mydb.commit()
 # mydb.commit()
-print("\n***********************************************Values inserted in Dept Table**************************")
+print("\n************************************Values inserted in Dept Table************************************")
 
 
 
@@ -60,7 +60,7 @@ createemp = "CREATE TABLE IF NOT EXISTS company.employee (`EFname` VARCHAR(45) N
              "PRIMARY KEY (`ESSN`))"
 dbcursor.execute(createemp)
 mydb.commit()
-print("*********************************************** Table Emp created**************************")
+print("\n************************************Table Emp created************************************")
 
 
 csvfile = open('Input/EMPLOYEE.csv', 'r')
@@ -79,8 +79,7 @@ for row in csvfile:
     dbcursor.execute(insertemp, (EFname, EMiddle, ELname, ESSN, EDOB, EAddress, Sex, ESalary, SupSSN, EDeptNo))
 mydb.commit()
 # mydb.commit()
-print("\n***********************************************Values inserted in Emp Table**************************")
-
+print("\n************************************Values inserted in Emp Table************************************")
 
 
 # Create Project Table--------------------------------
@@ -94,7 +93,7 @@ createproject = "CREATE TABLE IF NOT EXISTS company.project (" \
                 # "FOREIGN KEY (`PDeptNo`) REFERENCES `department` (`DNum`))"
 dbcursor.execute(createproject)
 mydb.commit()
-print("*********************************************** Table Project created**************************")
+print("\n************************************ Table Project created************************************")
 
 csvfile = open('Input/PROJECT.csv', 'r')
 insertproject = "INSERT INTO company.project (PName, PNo, PLocation, PDeptNo) VALUES (%s, %s, %s,%s)"
@@ -102,7 +101,7 @@ for row in csvfile:
     val = tuple(row.rstrip('\n').replace("'", '').split(','))
     dbcursor.execute(insertproject, val)
 mydb.commit()
-print("\n***********************************************Values inserted in Project Table**************************")
+print("\n************************************Values inserted in Project Table************************************")
 
 
 # Create Department Location Table--------------------------------
@@ -113,7 +112,7 @@ createdept_loc = "CREATE TABLE IF NOT EXISTS company.dept_loc (" \
                 # "FOREIGN KEY (`PDeptNo`) REFERENCES `department` (`DNum`))"
 dbcursor.execute(createdept_loc)
 mydb.commit()
-print("\n*********************************************** Table Dept_Location created**************************")
+print("\n************************************ Table Dept_Location created************************************")
 
 csvfile = open('Input/DEPT_LOCATIONS.csv', 'r')
 insertdept_loc = "INSERT INTO company.dept_loc (DNum, DLocation) VALUES (%s, %s)"
@@ -122,8 +121,7 @@ for row in csvfile:
     dbcursor.execute(insertdept_loc, val)
 mydb.commit()
 # mydb.commit()
-print("\n***********************************************Values inserted in Dept_Location Table**************************")
-
+print("\n************************************Values inserted in Dept_Location Table************************************")
 
 
 
@@ -136,7 +134,7 @@ createworks_on = "CREATE TABLE IF NOT EXISTS company.works_on (" \
                 # "FOREIGN KEY (`PDeptNo`) REFERENCES `department` (`DNum`))"
 dbcursor.execute(createworks_on)
 mydb.commit()
-print("*********************************************** Table WorksOn created**************************")
+print("\n************************************Table WorksOn created************************************")
 
 csvfile = open('Input/WORKS_ON.csv', 'r')
 insertworks_on = "INSERT INTO company.works_on (EmpSSN, PNum, Hours) VALUES (%s, %s, %s)"
@@ -145,7 +143,8 @@ for row in csvfile:
     dbcursor.execute(insertworks_on, val)
 mydb.commit()
 
-print("\n***********************************************Values inserted in WorksOn Table**************************")
+print("\n************************************Values inserted in WorksOn Table************************************")
+
 
 #  Connecting to Mongo db
 
@@ -168,7 +167,7 @@ projresult = dbcursor.fetchall()
 
 for x in projresult:
    # print(x)
-   print("\nExecuting Query to Find Employees for"+str(x[1])+"\n")
+#    print("\nExecuting Query to Find Employees for"+str(x[1])+"\n")
    EmpWorksquery = "Select ELname, EFname, Hours FROM employee, works_on Where employee.ESSN = works_on.EmpSSN AND works_on.PNum = " + str(x[1])
    cur = mydb.cursor()
    cur.execute(EmpWorksquery)
